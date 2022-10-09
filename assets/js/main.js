@@ -1,41 +1,62 @@
 console.log("Entro al main.js");
 const tblDatos = document.getElementById("tblDatos");
-const cxt = document.getElementById('myChart').getContext('2d');
+const ctx = document.getElementById('myChart').getContext('2d');
 
 function loadData(){
     console.log("entro a cargar data");
-    fetch("https://fedeperin-harry-potter-api.herokuapp.com/libros")
+    fetch("http://ucamp.alumnos.dev4humans.com.mx/Main/endpoint_alumnos")
     .then(response => response.json())
     .then(result => {
-        console.log(id);
-        const labels_for_chart = result.data.map(item => item.libro);
-        const data_for_chart = result.data.map (item => item.fecha_de_lanzamiento);
+        console.log();
+        const labels_for_chart = result.data.map(item => item.nombre);
+        const data_for_chart = result.data.map (item => item.calificacion);
 
-        const myChart = new Chart(cxt,{
-            
-                type: 'bubble',
-                data: {
-                    datasets: [{
-                        label: 'First Dataset',
-                        data: [{
-                          x: 20,
-                          y: 30,
-                          r: 15
-                        }, {
-                          x: 40,
-                          y: 10,
-                          r: 10
-                        }],
-                        backgroundColor: 'rgb(255, 99, 132)'
-                      }]
-                },
-                options: {}
+        const myChart = new Chart (ctx, {
+          type: 'line',
+          data: {
+              labels: labels_for_chart,
+              datasets: [{
+                  label: 'nota',
+                  data: data_for_chart,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: false
+                  }
+              }
+          }
+        });
+
+        tblDatos.innerHTML="";
+        for(const registro of result.data){
+              let tr = `
+              <tr>
+              <td>${registro.id}</td>
+              <td>${registro.nombre}</td>
+              <td>${registro.calificacion}</td>
+        
+              </tr> `;
+          tblDatos.innerHTML += tr;
         }
-            )
-        // tblDatos.innerHTML="";
-        // for(const registro of result.data){
-        //     let tr
-        // }
     }).catch(error => {
         console.log(error);
     })
