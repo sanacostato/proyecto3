@@ -4,7 +4,7 @@ const ctx = document.getElementById('myChart').getContext('2d');
 
 function loadData(){
     console.log("entro a cargar data");
-    fetch("http://ucamp.alumnos.dev4humans.com.mx/Main/endpoint_alumnos", {
+    fetch("https://ucamp.alumnos.dev4humans.com.mx/Main/endpoint_alumnos", {
       method: "GET",
     mode: "cors"    })
     .then(response => response.json())
